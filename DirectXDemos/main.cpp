@@ -2,8 +2,14 @@
 #include <string>
 #include <sstream>
 
+#include "Utils/WindowsMessageMap.h"
+
 LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+
+    static WindowsMessageMap messgaeMap;
+
+    OutputDebugString(messgaeMap(msg,lParam,wParam).c_str());
     switch (msg)
     {
     case WM_CLOSE:
