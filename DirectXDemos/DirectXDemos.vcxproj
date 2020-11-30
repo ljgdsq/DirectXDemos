@@ -129,6 +129,7 @@
     <ClCompile Include="Utils\WindowsMessageMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Utils\WindowsMessageMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

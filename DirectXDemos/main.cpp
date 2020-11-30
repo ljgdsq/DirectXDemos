@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include "ChiliWin.h"
 #include <string>
 #include <sstream>
 
@@ -18,25 +18,21 @@ LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_KEYDOWN:
     {
-        if (wParam == 'T')
-        {
-            SetWindowText(hWnd, "KeyDown");
-        }
+        /*     static std::string title;
+             title.push_back(wParam);
+             SetWindowText(hWnd, title.c_str());*/
     }break;
 
     case WM_KEYUP:
     {
-        if (wParam == 'T')
-        {
-            SetWindowText(hWnd, "KeyRelease");
-        }
+      
     }
 
     case WM_CHAR:
     {
-        static std::string title;
-        title.push_back(wParam);
-        SetWindowText(hWnd, title.c_str());
+         static std::string title;
+         title.push_back(wParam);
+         SetWindowText(hWnd, title.c_str());
     }break;
 
     case WM_LBUTTONDOWN:
