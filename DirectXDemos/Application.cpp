@@ -20,10 +20,11 @@ int Application::Run()
 }
 
 
-#include <sstream>
+
 void Application::DoFrame()
 {
-    //std::stringstream ss;
-    //ss << timer.Peek();
-    //window.SetTitle(ss.str().c_str());
+
+    window.Gfx().EndFrame();
+    const float r = sin(timer.Peek()) / 2.0f + 0.5f;
+    window.Gfx().ClearBuffer(r,0.5f,1-r);
 }

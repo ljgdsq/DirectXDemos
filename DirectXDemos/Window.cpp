@@ -56,6 +56,7 @@ Window::Window(int width, int height, const char* name) noexcept :width(width), 
 
     ShowWindow(hWnd, SW_SHOWDEFAULT);
 
+    pGfx = std::make_unique<Graphic>(hWnd);
 }
 
 Window::~Window()
@@ -66,6 +67,11 @@ Window::~Window()
 void Window::SetTitle(const std::string& title)
 {
     SetWindowText(hWnd, title.c_str());
+}
+
+Graphic& Window::Gfx()
+{
+    return *pGfx;
 }
 
 std::optional<int> Window::ProcessMessage()

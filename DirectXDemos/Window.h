@@ -2,7 +2,10 @@
 #include "ChiliWin.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Graphic.h"
 #include <optional>
+#include <memory>
+
 class Window
 {
 private:
@@ -27,7 +30,7 @@ public:
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
     void SetTitle(const std::string& title);
-
+    Graphic& Gfx();
     static std::optional<int> ProcessMessage();
 public:
     Keyboard kbd;
@@ -41,5 +44,6 @@ private:
     int height;
     HWND hWnd;
 
+    std::unique_ptr<Graphic> pGfx;
 };
 
