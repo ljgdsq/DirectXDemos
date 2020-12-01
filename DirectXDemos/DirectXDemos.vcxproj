@@ -127,10 +127,20 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Utils\WindowsMessageMap.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Utils\WindowsMessageMap.h" />
+    <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DirectXDemos.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico" />
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
