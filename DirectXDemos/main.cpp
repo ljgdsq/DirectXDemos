@@ -5,6 +5,9 @@
 #include "Window.h"
 #include "Utils/WindowsMessageMap.h"
 
+#include <iostream>
+
+
 
 int CALLBACK WinMain(
     HINSTANCE hInstance,
@@ -14,10 +17,9 @@ int CALLBACK WinMain(
 )
 {
     Window wind(300,200,"dx");
-   
+
 
     MSG msg;
-
     BOOL gResult;
 
     while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
