@@ -68,6 +68,25 @@ void Window::SetTitle(const std::string& title)
     SetWindowText(hWnd, title.c_str());
 }
 
+std::optional<int> Window::ProcessMessage()
+{
+    MSG msg;
+
+    while (PeekMessage(&msg,nullptr,0,0,PM_REMOVE))
+    {
+        if (msg.message==WM_QUIT)
+        {
+            return msg.wParam;
+        }
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+
+    }
+
+    //return std::optional<int>();
+    return {};
+}
+
 LRESULT Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
 
@@ -91,7 +110,7 @@ LRESULT Window::HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
-#ifdef Log
+#ifdef _DEBUG
     static WindowsMessageMap mm;
     OutputDebugString(mm(msg, lParam, wParam).c_str());
 #endif // DEBUG

@@ -2,6 +2,7 @@
 #include "ChiliWin.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include <optional>
 class Window
 {
 private:
@@ -26,6 +27,8 @@ public:
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
     void SetTitle(const std::string& title);
+
+    static std::optional<int> ProcessMessage();
 public:
     Keyboard kbd;
     Mouse mouse;
