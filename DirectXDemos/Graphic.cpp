@@ -80,17 +80,39 @@ void Graphics::DrawTestShape()
 
     struct Vertex
     {
-        float x;
-        float y;
+        struct Pos
+        {
+            float x;
+            float y;
+        }pos;
+     
+        struct Color
+        {
+        unsigned char r;
+        unsigned char g;
+        unsigned char b;
+        unsigned char a;
+        }color;
+    
     };
 
-    const Vertex vertices[] =
+     Vertex vertices[] =
     {
-        {0,0.5f},
-        {0.5f,-0.5f},
-        {-0.5f,-0.5f}
+        {0,0.5f,255,0,0,255},
+        {0,0.5f,255,0,0,255},
+        {0.5f,-0.5f,0,255,0,255},
+        {-0.5f,-0.5f,0,0,255,255}
     };
+     vertices[0].pos = { 0,0 };
+     vertices[1].pos = { 0.0f,1.f };
+     vertices[2].pos = { 1.f,1.f };
+     vertices[3].pos = {1.f,0 };
 
+
+     const unsigned short indices[] = {
+        0,1,2,
+       0,2,3
+     };
     //vertex buffer
     ComPtr<ID3D11Buffer> buffer;
     D3D11_BUFFER_DESC desc = {};
@@ -104,11 +126,29 @@ void Graphics::DrawTestShape()
     D3D11_SUBRESOURCE_DATA data = {};
     data.pSysMem = vertices;
     GFX_THROW_INFO(device->CreateBuffer(&desc, &data, &buffer));
-   
     const UINT stride = sizeof(Vertex);
-    const UINT offset =0u;
+    const UINT offset = 0u;
 
     context->IASetVertexBuffers(0u, 1u, buffer.GetAddressOf(), &stride, &offset);
+
+    //index buffer
+    ComPtr<ID3D11Buffer> ibuffer;
+    D3D11_BUFFER_DESC idesc = {};
+    idesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    idesc.Usage = D3D11_USAGE_DEFAULT;
+    idesc.CPUAccessFlags = 0u;
+    idesc.MiscFlags = 0u;
+    idesc.ByteWidth = sizeof(indices);
+    idesc.StructureByteStride = sizeof(unsigned short);
+
+    D3D11_SUBRESOURCE_DATA idata = {};
+    idata.pSysMem = indices;
+    GFX_THROW_INFO(device->CreateBuffer(&idesc, &idata, &ibuffer));
+
+    context->IASetIndexBuffer(ibuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
+
+
+
 
     ComPtr<ID3DBlob> blob;
 
@@ -128,12 +168,12 @@ void Graphics::DrawTestShape()
 
 
     ComPtr<ID3D11InputLayout> inputLayout;
-   const D3D11_INPUT_ELEMENT_DESC idesc[] = {
-        {"Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,
-        D3D11_INPUT_PER_VERTEX_DATA,0}
+   const D3D11_INPUT_ELEMENT_DESC inputdesc[] = {
+        {"Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0, D3D11_INPUT_PER_VERTEX_DATA,0},
+        {"Color",0,DXGI_FORMAT_R8G8B8A8_UNORM,0,8u, D3D11_INPUT_PER_VERTEX_DATA,0}
     };
 
-    GFX_THROW_INFO (device->CreateInputLayout(idesc, 1u, blob->GetBufferPointer(),
+    GFX_THROW_INFO (device->CreateInputLayout(inputdesc, std::size(inputdesc), blob->GetBufferPointer(),
         blob->GetBufferSize(), &inputLayout));
     context->IASetInputLayout(inputLayout.Get());
 
@@ -150,7 +190,8 @@ void Graphics::DrawTestShape()
     vp.TopLeftY = 0;
 
     context->RSSetViewports(1u, &vp);
-    GFX_THROW_INFO_ONLY(context->Draw(3u, 0u));
+    //GFX_THROW_INFO_ONLY(context->Draw(std::size(vertices), 0u));
+    GFX_THROW_INFO_ONLY(context->DrawIndexed(std::size(indices),0u,0u));
 
 }
 

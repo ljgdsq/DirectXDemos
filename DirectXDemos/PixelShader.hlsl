@@ -1,4 +1,4 @@
-float4 main() :SV_Target
+float4 main(float3 color:Color) :SV_Target
 {
-    return float4(1,0.5f,0.5f,1);
+    return float4(color.r,color.g,color.b,1);
 }
