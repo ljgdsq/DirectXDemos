@@ -1,5 +1,6 @@
 #pragma once
 #include "ChiliWin.h"
+#include "ChiliException.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphic.h"
@@ -7,7 +8,19 @@
 #include <memory>
 
 class Window
-{
+{public:
+    class Exception : public ChiliException
+    {
+    public:
+        Exception(int line, const char* file, HRESULT hr) noexcept;
+        const char* what() const noexcept override;
+        virtual const char* GetType() const noexcept;
+        static std::string TranslateErrorCode(HRESULT hr) noexcept;
+        HRESULT GetErrorCode() const noexcept;
+        std::string GetErrorString() const noexcept;
+    private:
+        HRESULT hr;
+    };
 private:
     class WindowClass
     {
@@ -25,12 +38,12 @@ private:
         HINSTANCE hInst;
     };
 public:
-    Window(int width, int height, const char* name) noexcept;
+    Window(int width, int height, const char* name) ;
     ~Window();
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
     void SetTitle(const std::string& title);
-    Graphic& Gfx();
+    Graphics& Gfx();
     static std::optional<int> ProcessMessage();
 public:
     Keyboard kbd;
@@ -44,6 +57,9 @@ private:
     int height;
     HWND hWnd;
 
-    std::unique_ptr<Graphic> pGfx;
+    std::unique_ptr<Graphics> pGfx;
 };
 
+// error exception helper macro
+#define CHWND_EXCEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
+#define CHWND_LAST_EXCEPT() Window::Exception( __LINE__,__FILE__,GetLastError() )
