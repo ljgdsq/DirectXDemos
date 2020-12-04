@@ -67,14 +67,14 @@ Graphics::Graphics(HWND hWnd)
 
 void Graphics::EndFrame()
 {
-    DrawTestShape();
+  
     if (swapChain)
     {
         swapChain->Present(1u,0u);
     }
 }
 
-void Graphics::DrawTestShape()
+void Graphics::DrawTestShape(float angle)
 {
     HRESULT hr;
 
@@ -149,6 +149,39 @@ void Graphics::DrawTestShape()
 
 
 
+    //constant buffer
+    struct ConstantBuffer
+    {
+        struct 
+        {
+            float element[4][4];
+        }transform;
+    };
+    
+    auto scale = 200.0f / 300;
+    const ConstantBuffer cb = {
+        {
+            scale*std::cos(angle),std::sin(angle),0,0,
+            scale*-std::sin(angle),std::cos(angle),0,0,
+           0,0,1,0,
+           0,0,0,1,
+            }
+    };
+
+    ComPtr<ID3D11Buffer> cbuffer;
+    D3D11_BUFFER_DESC cdesc = {};
+    cdesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    cdesc.Usage = D3D11_USAGE_DYNAMIC;
+    cdesc.CPUAccessFlags =D3D11_CPU_ACCESS_WRITE;
+    cdesc.MiscFlags = 0u;
+    cdesc.ByteWidth = sizeof(cb);
+    cdesc.StructureByteStride = 0;
+    
+   
+    D3D11_SUBRESOURCE_DATA cdata = {};
+    cdata.pSysMem = &cb;
+    device->CreateBuffer(&cdesc, &cdata, &cbuffer);
+    context->VSSetConstantBuffers(0u, 1u, cbuffer.GetAddressOf());
 
     ComPtr<ID3DBlob> blob;
 
@@ -185,7 +218,7 @@ void Graphics::DrawTestShape()
     vp.Width = 300;
     vp.Height = 200;
     vp.MinDepth = 0;
-    vp.MaxDepth = 1;
+    vp.MaxDepth = 1; 
     vp.TopLeftX = 0;
     vp.TopLeftY = 0;
 

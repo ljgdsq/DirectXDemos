@@ -61,7 +61,7 @@ public:
         context->ClearRenderTargetView(renderTarget.Get(), color);
     }
 
-    void DrawTestShape();
+    void DrawTestShape(float angle);
 private:
     Microsoft::WRL::ComPtr<IDXGISwapChain>swapChain;
     Microsoft::WRL::ComPtr<ID3D11DeviceContext>context;

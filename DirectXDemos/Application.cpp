@@ -25,6 +25,7 @@ void Application::DoFrame()
 {
     const float r = (float)(sin(timer.Peek()) / 2.0f) + 0.5f;
     window.Gfx().ClearBuffer(r, 0.5f, 1 - r);
+    window.Gfx().DrawTestShape(timer.Peek());
     window.Gfx().EndFrame();
   
  
