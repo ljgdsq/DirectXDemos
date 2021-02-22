@@ -1,6 +1,5 @@
-
+#include "test.h"
 #include "Application.h"
-
 int CALLBACK WinMain(
     HINSTANCE hInstance,
     HINSTANCE hPreInstance,
@@ -8,6 +7,8 @@ int CALLBACK WinMain(
     int nCmdShow
 )
 {
+
+    test();
     try
     {
         Application app;

@@ -4,6 +4,9 @@ Application::Application() noexcept :window(300, 200, "dx")
 {
 }
 
+#include <cmath>
+
+
 int Application::Run()
 {
     while (true)
